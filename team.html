@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team - The Uncalled X | UnX Football Club</title>
+    <meta name="description" content="The Uncalled X squad roster. View player profiles, stats, and jersey numbers.">
+    <meta name="keywords" content="The Uncalled X, UnX, team, squad, players">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://theuncalledx.pages.dev/team.html">
+    <meta name="google-site-verification" content="google90ebec4811aa83b2">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #00FF00;
+            --accent: #00FF00;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --white: #FFFFFF;
+            --gray: #1a1a1a;
+            --gray-light: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--white);
+            line-height: 1.6;
+            letter-spacing: -0.3px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            letter-spacing: 3px;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(0px);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 255, 0, 0.15), inset 0 1px 0 rgba(0, 255, 0, 0.1);
+            padding: 1rem 3rem;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--primary), #33FF33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            position: relative;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.4s ease;
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 1px;
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-top: 70px;
+            padding: 100px 2rem 60px;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            background: linear-gradient(135deg, var(--primary), #33FF33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            background: var(--darker);
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .player-card {
+            background: linear-gradient(135deg, var(--gray-light) 0%, var(--gray) 100%);
+            border: 2px solid var(--primary);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .player-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100px;
+            width: 150px;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, transparent 70%);
+            transition: right 0.3s ease;
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 255, 0, 0.25);
+            border-color: #33FF33;
+        }
+
+        .player-card:hover::before {
+            right: -20px;
+        }
+
+        .player-name {
+            font-size: 1.4rem;
+            font-weight: 900;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .player-info {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .player-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-top: 0.3rem;
+            letter-spacing: 0.5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            border-top: 3px solid var(--primary);
+            padding: 5rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .footer-section a {
+            display: block;
+            color: #999;
+            text-decoration: none;
+            margin-bottom: 0.9rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            transform: translateX(8px);
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, var(--primary), #33FF33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            nav.scrolled {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .player-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .page-header {
+                padding: 80px 2rem 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="logo">UnX</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="team.html" class="nav-link active">Team</a></li>
+            <li><a href="fixtures.html" class="nav-link">Fixtures</a></li>
+            <li><a href="news.html" class="nav-link">News</a></li>
+            <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+            <li><a href="join.html" class="nav-link">Join Us</a></li>
+            <li><a href="admin.html" class="nav-link">Admin</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>OUR SQUAD</h1>
+    </div>
+
+    <!-- Players -->
+    <section class="section">
+        <div class="player-grid" id="teamContainer">
+            <div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">
+                <div class="loading"></div>
+                <p style="margin-top: 1rem;">Loading squad...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">UnX</div>
+                <p style="color: #888; font-size: 0.95rem;">The Uncalled X</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links</h3>
+                <a href="index.html">Home</a>
+                <a href="team.html">Team</a>
+                <a href="fixtures.html">Fixtures</a>
+                <a href="news.html">News</a>
+                <a href="gallery.html">Gallery</a>
+            </div>
+            <div class="footer-section">
+                <h3>Join</h3>
+                <a href="join.html">Apply Now</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Uncalled X. | Chittagong, Bangladesh</p>
+        </div>
+    </footer>
+
+    <script>
+        const SUPABASE_URL = 'https://dwsvxrucgixlfvoltnqj.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3c3Z4cnVjZ2l4bGZ2b2x0bnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4OTQ0NjcsImV4cCI6MjA4ODQ3MDQ2N30.36W-BNx9kNNpvRlaOz0YpKmroG6CVh5-Aj-M-9JSuWQ';
+
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        async function loadTeam() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/players?order=sort_order.asc,position.asc,name.asc`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                const data = await response.json();
+                const container = document.getElementById('teamContainer');
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">No players yet. Go to admin to add squad members.</div>';
+                    return;
+                }
+
+                container.innerHTML = data.map(p => `
+                    <div class="player-card">
+                        <div class="player-name">${p.name}</div>
+                        <div class="player-info">Jersey #${p.jersey || '—'} • ${p.position || 'Position TBA'}</div>
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">${p.goals || 0}</div>
+                                <div class="stat-label">Goals</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${p.assists || 0}</div>
+                                <div class="stat-label">Assists</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${p.apps || 0}</div>
+                                <div class="stat-label">Apps</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('teamContainer').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">Unable to load squad</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTeam);
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News - The Uncalled X | UnX Football Club</title>
+    <meta name="description" content="Latest news and updates from The Uncalled X football club.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://theuncalledx.pages.dev/news.html">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#00FF00;--dark:#0a0a0a;--darker:#000000;--white:#FFFFFF;--gray:#1a1a1a;--gray-light:#2a2a2a}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:var(--darker);color:var(--white);line-height:1.6;letter-spacing:-0.3px}
+        h1,h2,h3{font-family:'Bebas Neue','Orbitron',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+        h2{font-size:clamp(2rem,8vw,3.5rem);letter-spacing:3px}
+        nav{position:fixed;top:0;left:0;right:0;padding:1.5rem 3rem;z-index:1000;display:flex;justify-content:space-between;align-items:center;transition:all 0.4s ease}
+        nav.scrolled{background:rgba(10,10,10,0.92);backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,255,0,0.15),inset 0 1px 0 rgba(0,255,0,0.1);padding:1rem 3rem}
+        .logo{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:4px;background:linear-gradient(135deg,var(--primary),#33FF33);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase}
+        .nav-links{display:flex;gap:3rem;list-style:none}
+        .nav-links a{color:var(--white);text-decoration:none;font-size:0.9rem;font-weight:600;font-family:'Orbitron',sans-serif;letter-spacing:1px;position:relative;text-transform:uppercase;transition:all 0.3s ease}
+        .nav-links a::before{content:'';position:absolute;bottom:-5px;left:0;width:0;height:3px;background:var(--primary);box-shadow:0 0 10px var(--primary);transition:width 0.4s ease}
+        .nav-links a:hover::before,.nav-links a.active::before{width:100%}
+        .nav-links a:hover{color:var(--primary);text-shadow:0 0 10px var(--primary)}
+        .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer}
+        .hamburger span{width:25px;height:3px;background:var(--primary);border-radius:1px;box-shadow:0 0 8px var(--primary)}
+        .page-header{margin-top:70px;padding:100px 2rem 60px;background:linear-gradient(135deg,var(--dark) 0%,var(--darker) 100%);border-bottom:3px solid var(--primary);text-align:center}
+        .page-header h1{font-size:clamp(2.5rem,8vw,3.5rem);background:linear-gradient(135deg,var(--primary),#33FF33);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px}
+        .section{padding:3rem 2rem;background:var(--darker)}
+        .news-list{max-width:900px;margin:0 auto;display:grid;gap:2rem}
+        .news-post{border-bottom:2px solid var(--gray);padding-bottom:2rem;animation:fadeInUp 0.6s ease-out}
+        .news-post:last-child{border-bottom:none}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .news-date{color:var(--primary);font-size:0.85rem;text-transform:uppercase;font-weight:700;letter-spacing:1.5px;font-family:'Orbitron',sans-serif;margin-bottom:0.5rem}
+        .news-title{font-size:1.8rem;font-weight:900;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;margin-bottom:1rem;color:var(--white);line-height:1.3}
+        .news-image{width:100%;max-height:300px;background:linear-gradient(135deg,var(--gray-light),var(--gray));margin:1.5rem 0;border-radius:4px;overflow:hidden}
+        .news-image img{width:100%;height:100%;object-fit:cover}
+        .news-body{color:#ccc;font-size:1rem;line-height:1.8}
+        .loading{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,255,0,0.3);border-radius:50%;border-top-color:var(--primary);animation:spin 0.8s linear infinite;box-shadow:0 0 10px rgba(0,255,0,0.3)}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        footer{background:linear-gradient(135deg,var(--dark) 0%,var(--darker) 100%);border-top:3px solid var(--primary);padding:5rem 2rem 2rem}
+        .footer-content{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:3rem;margin-bottom:3rem}
+        .footer-section h3{margin-bottom:1.5rem;color:var(--primary);text-transform:uppercase;font-size:0.95rem;letter-spacing:2px;text-shadow:0 0 15px rgba(0,255,0,0.2)}
+        .footer-section a{display:block;color:#999;text-decoration:none;margin-bottom:0.9rem;transition:all 0.3s ease;font-size:0.95rem}
+        .footer-section a:hover{color:var(--primary);text-shadow:0 0 10px var(--primary);transform:translateX(8px)}
+        .footer-logo{font-size:1.8rem;font-weight:900;font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,var(--primary),#33FF33);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem;letter-spacing:3px}
+        .footer-bottom{text-align:center;padding-top:2rem;border-top:1px solid rgba(0,255,0,0.2);color:#666;font-size:0.9rem}
+        @media(max-width:768px){nav{padding:1rem 1.5rem}nav.scrolled{padding:1rem 1.5rem}.nav-links{gap:1.5rem}.page-header{padding:80px 2rem 40px}}
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="logo">UnX</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="team.html" class="nav-link">Team</a></li>
+            <li><a href="fixtures.html" class="nav-link">Fixtures</a></li>
+            <li><a href="news.html" class="nav-link active">News</a></li>
+            <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+            <li><a href="join.html" class="nav-link">Join Us</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+    <div class="page-header"><h1>NEWS</h1></div>
+    <section class="section">
+        <div class="news-list" id="newsContainer">
+            <div style="text-align:center;color:#666;padding:4rem 2rem"><div class="loading"></div><p style="margin-top:1rem">Loading news...</p></div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section"><div class="footer-logo">UnX</div><p style="color:#888;font-size:0.95rem">The Uncalled X</p></div>
+            <div class="footer-section"><h3>Links</h3><a href="index.html">Home</a><a href="team.html">Team</a><a href="fixtures.html">Fixtures</a><a href="news.html">News</a><a href="gallery.html">Gallery</a></div>
+            <div class="footer-section"><h3>Join</h3><a href="join.html">Apply Now</a></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 The Uncalled X. | Chittagong, Bangladesh</p></div>
+    </footer>
+    <script>
+        const SUPABASE_URL='https://dwsvxrucgixlfvoltnqj.supabase.co';const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3c3Z4cnVjZ2l4bGZ2b2x0bnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4OTQ0NjcsImV4cCI6MjA4ODQ3MDQ2N30.36W-BNx9kNNpvRlaOz0YpKmroG6CVh5-Aj-M-9JSuWQ';
+        window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50));
+        document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('active'));
+        async function loadNews(){try{const r=await fetch(`${SUPABASE_URL}/rest/v1/news?order=created_at.desc`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});const d=await r.json();const c=document.getElementById('newsContainer');if(!d||d.length===0){c.innerHTML='<div style="text-align:center;color:#666;padding:4rem 2rem">No news yet</div>';return}c.innerHTML=d.map(p=>{const dt=new Date(p.created_at).toLocaleDateString();return`<div class="news-post"><div class="news-date">${dt}</div><div class="news-title">${p.title}</div>${p.image_url?`<div class="news-image"><img src="${p.image_url}" alt="${p.title}"></div>`:''}<div class="news-body">${p.body}</div></div>`}).join('')}catch(e){console.error(e);document.getElementById('newsContainer').innerHTML='<div style="text-align:center;color:#666;padding:4rem 2rem">Unable to load</div>'}}
+        document.addEventListener('DOMContentLoaded',loadNews);
+    </script>
+</body>
+</html>
