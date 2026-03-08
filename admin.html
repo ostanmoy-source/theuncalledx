@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Panel - The Uncalled X</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00FF00;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --white: #FFFFFF;
+            --gray: #1a1a1a;
+            --gray-light: #2a2a2a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--white);
+        }
+
+        /* LOGIN SCREEN */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+        }
+
+        .login-box {
+            background: linear-gradient(135deg, var(--gray-light), var(--gray));
+            border: 2px solid var(--primary);
+            padding: 3rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.15);
+        }
+
+        .login-box h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--darker);
+            border: 2px solid var(--primary);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--primary);
+            color: var(--darker);
+            border: none;
+            font-weight: 800;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border-radius: 0;
+        }
+
+        .btn:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
+            transform: scale(1.03);
+        }
+
+        .error-msg {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* ADMIN DASHBOARD */
+        .admin-screen {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .admin-screen.active {
+            display: flex;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            padding: 2rem 3rem;
+            border-bottom: 3px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--primary);
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .logout-btn {
+            padding: 0.7rem 1.5rem;
+            background: #ff4444;
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff6666;
+            transform: scale(1.05);
+        }
+
+        .admin-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--gray);
+            border-right: 2px solid var(--primary);
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-item:hover {
+            background: var(--dark);
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-item.active {
+            background: var(--dark);
+            border-left-color: var(--primary);
+            color: var(--primary);
+            box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            background: var(--darker);
+        }
+
+        .tab-section {
+            display: none;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .btn-add {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: var(--darker);
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .btn-add:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.6);
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        thead {
+            background: var(--gray);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            color: var(--primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        tr:hover {
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+            border-radius: 0;
+        }
+
+        .btn-edit {
+            background: #4488ff;
+            color: var(--white);
+        }
+
+        .btn-edit:hover {
+            background: #6699ff;
+        }
+
+        .btn-delete {
+            background: #ff4444;
+            color: var(--white);
+        }
+
+        .btn-delete:hover {
+            background: #ff6666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--gray);
+            border: 2px solid var(--primary);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .close-modal {
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--primary);
+            background: none;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--darker);
+            border: 2px solid var(--primary);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100px;
+            transition: all 0.3s;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--darker);
+            border: 2px solid var(--primary);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .form-buttons .btn-submit {
+            background: var(--primary);
+            color: var(--darker);
+        }
+
+        .form-buttons .btn-submit:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.6);
+        }
+
+        .form-buttons .btn-cancel {
+            background: #666;
+            color: var(--white);
+        }
+
+        .form-buttons .btn-cancel:hover {
+            background: #888;
+        }
+
+        @media (max-width: 768px) {
+            .admin-body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 150px;
+                border-right: none;
+                border-bottom: 2px solid var(--primary);
+                display: flex;
+                overflow-x: auto;
+            }
+
+            .sidebar-item {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .login-box {
+                margin: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>Admin Panel</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <div class="error-msg" id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div class="admin-screen" id="adminScreen">
+        <div class="admin-header">
+            <h1>Admin Panel</h1>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+
+        <div class="admin-body">
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-item active" data-tab="players">Players</div>
+                <div class="sidebar-item" data-tab="fixtures">Fixtures</div>
+                <div class="sidebar-item" data-tab="news">News</div>
+                <div class="sidebar-item" data-tab="gallery">Gallery</div>
+                <div class="sidebar-item" data-tab="applications">Applications</div>
+            </div>
+
+            <div class="content">
+                <!-- Players Tab -->
+                <div class="tab-section active" id="playersTab">
+                    <h2 class="section-title">Players</h2>
+                    <button class="btn-add" onclick="openPlayerForm()">+ Add Player</button>
+                    <div id="playersContainer"><div class="loading"></div></div>
+                </div>
+
+                <!-- Fixtures Tab -->
+                <div class="tab-section" id="fixturesTab">
+                    <h2 class="section-title">Fixtures</h2>
+                    <button class="btn-add" onclick="openFixtureForm()">+ Add Fixture</button>
+                    <div id="fixturesContainer"><div class="loading"></div></div>
+                </div>
+
+                <!-- News Tab -->
+                <div class="tab-section" id="newsTab">
+                    <h2 class="section-title">News</h2>
+                    <button class="btn-add" onclick="openNewsForm()">+ Add News Post</button>
+                    <div id="newsContainer"><div class="loading"></div></div>
+                </div>
+
+                <!-- Gallery Tab -->
+                <div class="tab-section" id="galleryTab">
+                    <h2 class="section-title">Gallery</h2>
+                    <button class="btn-add" onclick="openGalleryForm()">+ Add Photo</button>
+                    <div id="galleryContainer"><div class="loading"></div></div>
+                </div>
+
+                <!-- Applications Tab -->
+                <div class="tab-section" id="applicationsTab">
+                    <h2 class="section-title">Applications</h2>
+                    <div id="applicationsContainer"><div class="loading"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Player Modal -->
+    <div class="modal" id="playerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="playerModalTitle">Add Player</h2>
+                <button class="close-modal" onclick="closeModal('playerModal')">×</button>
+            </div>
+            <form id="playerForm">
+                <div class="form-group">
+                    <label>Player Name *</label>
+                    <input type="text" id="playerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Jersey Number</label>
+                    <input type="number" id="playerJersey">
+                </div>
+                <div class="form-group">
+                    <label>Position</label>
+                    <input type="text" id="playerPosition" placeholder="e.g., Goalkeeper, Defender, Midfielder, Forward">
+                </div>
+                <div class="form-group">
+                    <label>Goals</label>
+                    <input type="number" id="playerGoals" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Assists</label>
+                    <input type="number" id="playerAssists" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Appearances</label>
+                    <input type="number" id="playerApps" value="0">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Save</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('playerModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fixture Modal -->
+    <div class="modal" id="fixtureModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="fixtureModalTitle">Add Fixture</h2>
+                <button class="close-modal" onclick="closeModal('fixtureModal')">×</button>
+            </div>
+            <form id="fixtureForm">
+                <div class="form-group">
+                    <label>Opponent *</label>
+                    <input type="text" id="fixtureOpponent" required>
+                </div>
+                <div class="form-group">
+                    <label>Match Date *</label>
+                    <input type="datetime-local" id="fixtureDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Venue</label>
+                    <input type="text" id="fixtureVenue" placeholder="e.g., Sports Complex">
+                </div>
+                <div class="form-group">
+                    <label>Status *</label>
+                    <select id="fixtureStatus" required>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-group" id="scoreGroup" style="display: none;">
+                    <label>Our Score</label>
+                    <input type="number" id="fixtureOurScore" value="0">
+                </div>
+                <div class="form-group" id="theirScoreGroup" style="display: none;">
+                    <label>Their Score</label>
+                    <input type="number" id="fixtureTheirScore" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Competition</label>
+                    <input type="text" id="fixtureCompetition" placeholder="e.g., League, Cup, Friendly">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Save</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('fixtureModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- News Modal -->
+    <div class="modal" id="newsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="newsModalTitle">Add News Post</h2>
+                <button class="close-modal" onclick="closeModal('newsModal')">×</button>
+            </div>
+            <form id="newsForm">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="newsTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Content *</label>
+                    <textarea id="newsBody" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="newsImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Save</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('newsModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div class="modal" id="galleryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="galleryModalTitle">Add Photo</h2>
+                <button class="close-modal" onclick="closeModal('galleryModal')">×</button>
+            </div>
+            <form id="galleryForm">
+                <div class="form-group">
+                    <label>Image URL *</label>
+                    <input type="url" id="galleryImage" required placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Caption</label>
+                    <input type="text" id="galleryCaption" placeholder="Photo description">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Save</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('galleryModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Supabase Config
+        const SUPABASE_URL = 'https://dwsvxrucgixlfvoltnqj.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3c3Z4cnVjZ2l4bGZ2b2x0bnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4OTQ0NjcsImV4cCI6MjA4ODQ3MDQ2N30.36W-BNx9kNNpvRlaOz0YpKmroG6CVh5-Aj-M-9JSuWQ';
+
+        const { createClient } = window.supabase;
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const loginScreen = document.getElementById('loginScreen');
+        const adminScreen = document.getElementById('adminScreen');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Check if already logged in
+        async function checkAuth() {
+            const { data } = await supabase.auth.getSession();
+            if (data.session) {
+                showAdmin();
+                loadAllData();
+            }
+        }
+
+        checkAuth();
+
+        // Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+                if (error) {
+                    document.getElementById('loginError').textContent = error.message;
+                    document.getElementById('loginError').classList.add('show');
+                    return;
+                }
+
+                showAdmin();
+                loadAllData();
+            } catch (err) {
+                console.error('Login error:', err);
+                document.getElementById('loginError').textContent = 'Connection error. Check console.';
+                document.getElementById('loginError').classList.add('show');
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            loginScreen.style.display = 'flex';
+            adminScreen.classList.remove('active');
+            loginForm.reset();
+        });
+
+        function showAdmin() {
+            loginScreen.style.display = 'none';
+            adminScreen.classList.add('active');
+        }
+
+        // Tab Navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById(item.dataset.tab + 'Tab').classList.add('active');
+            });
+        });
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.getElementById(modalId).querySelector('form').reset();
+        }
+
+        function openPlayerForm() {
+            document.getElementById('playerModalTitle').textContent = 'Add Player';
+            openModal('playerModal');
+        }
+
+        function openFixtureForm() {
+            document.getElementById('fixtureModalTitle').textContent = 'Add Fixture';
+            openModal('fixtureModal');
+        }
+
+        function openNewsForm() {
+            document.getElementById('newsModalTitle').textContent = 'Add News Post';
+            openModal('newsModal');
+        }
+
+        function openGalleryForm() {
+            document.getElementById('galleryModalTitle').textContent = 'Add Photo';
+            openModal('galleryModal');
+        }
+
+        // Load All Data
+        async function loadAllData() {
+            try {
+                const [players, fixtures, news, gallery, applications] = await Promise.all([
+                    supabase.from('players').select('*').order('sort_order'),
+                    supabase.from('fixtures').select('*').order('match_date', { ascending: false }),
+                    supabase.from('news').select('*').order('created_at', { ascending: false }),
+                    supabase.from('gallery').select('*').order('created_at', { ascending: false }),
+                    supabase.from('applications').select('*').order('created_at', { ascending: false })
+                ]);
+
+                displayPlayers(players.data || []);
+                displayFixtures(fixtures.data || []);
+                displayNews(news.data || []);
+                displayGallery(gallery.data || []);
+                displayApplications(applications.data || []);
+            } catch (err) {
+                console.error('Error loading data:', err);
+            }
+        }
+
+        // Display Functions
+        function displayPlayers(data) {
+            const container = document.getElementById('playersContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-state">No players yet. Click + Add Player to start.</div>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <thead><tr>
+                        <th>Name</th>
+                        <th>Jersey</th>
+                        <th>Position</th>
+                        <th>Goals</th>
+                        <th>Assists</th>
+                        <th>Apps</th>
+                        <th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                        ${data.map(p => `
+                            <tr>
+                                <td>${p.name}</td>
+                                <td>${p.jersey || '—'}</td>
+                                <td>${p.position || '—'}</td>
+                                <td>${p.goals || 0}</td>
+                                <td>${p.assists || 0}</td>
+                                <td>${p.apps || 0}</td>
+                                <td>
+                                    <button class="btn-action btn-delete" onclick="deletePlayer(${p.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function displayFixtures(data) {
+            const container = document.getElementById('fixturesContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-state">No fixtures yet. Click + Add Fixture to start.</div>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <thead><tr>
+                        <th>Date</th>
+                        <th>Opponent</th>
+                        <th>Venue</th>
+                        <th>Status</th>
+                        <th>Score</th>
+                        <th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                        ${data.map(f => `
+                            <tr>
+                                <td>${new Date(f.match_date).toLocaleDateString()}</td>
+                                <td>${f.opponent}</td>
+                                <td>${f.venue || '—'}</td>
+                                <td>${f.status}</td>
+                                <td>${f.status === 'completed' ? f.our_score + '-' + f.their_score : '—'}</td>
+                                <td>
+                                    <button class="btn-action btn-delete" onclick="deleteFixture(${f.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function displayNews(data) {
+            const container = document.getElementById('newsContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-state">No news yet. Click + Add News Post to start.</div>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <thead><tr>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                        ${data.map(n => `
+                            <tr>
+                                <td>${n.title}</td>
+                                <td>${new Date(n.created_at).toLocaleDateString()}</td>
+                                <td>
+                                    <button class="btn-action btn-delete" onclick="deleteNews(${n.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function displayGallery(data) {
+            const container = document.getElementById('galleryContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-state">No photos yet. Click + Add Photo to start.</div>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <thead><tr>
+                        <th>Caption</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                        ${data.map(g => `
+                            <tr>
+                                <td>${g.caption || '—'}</td>
+                                <td>${new Date(g.created_at).toLocaleDateString()}</td>
+                                <td>
+                                    <button class="btn-action btn-delete" onclick="deleteGallery(${g.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function displayApplications(data) {
+            const container = document.getElementById('applicationsContainer');
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-state">No applications yet.</div>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <thead><tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Message</th>
+                        <th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                        ${data.map(a => `
+                            <tr>
+                                <td>${a.name}</td>
+                                <td>${a.email}</td>
+                                <td>${a.phone || '—'}</td>
+                                <td>${(a.message || '').substring(0, 40)}...</td>
+                                <td>
+                                    <button class="btn-action btn-delete" onclick="deleteApplication(${a.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Delete Functions
+        async function deletePlayer(id) {
+            if (!confirm('Delete this player?')) return;
+            await supabase.from('players').delete().eq('id', id);
+            loadAllData();
+        }
+
+        async function deleteFixture(id) {
+            if (!confirm('Delete this fixture?')) return;
+            await supabase.from('fixtures').delete().eq('id', id);
+            loadAllData();
+        }
+
+        async function deleteNews(id) {
+            if (!confirm('Delete this news post?')) return;
+            await supabase.from('news').delete().eq('id', id);
+            loadAllData();
+        }
+
+        async function deleteGallery(id) {
+            if (!confirm('Delete this photo?')) return;
+            await supabase.from('gallery').delete().eq('id', id);
+            loadAllData();
+        }
+
+        async function deleteApplication(id) {
+            if (!confirm('Delete this application?')) return;
+            await supabase.from('applications').delete().eq('id', id);
+            loadAllData();
+        }
+
+        // Form Submissions
+        document.getElementById('playerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const { error } = await supabase.from('players').insert({
+                name: document.getElementById('playerName').value,
+                jersey: document.getElementById('playerJersey').value || null,
+                position: document.getElementById('playerPosition').value || null,
+                goals: parseInt(document.getElementById('playerGoals').value) || 0,
+                assists: parseInt(document.getElementById('playerAssists').value) || 0,
+                apps: parseInt(document.getElementById('playerApps').value) || 0
+            });
+            if (!error) {
+                closeModal('playerModal');
+                loadAllData();
+            }
+        });
+
+        document.getElementById('fixtureForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const status = document.getElementById('fixtureStatus').value;
+            const { error } = await supabase.from('fixtures').insert({
+                opponent: document.getElementById('fixtureOpponent').value,
+                match_date: new Date(document.getElementById('fixtureDate').value).toISOString(),
+                venue: document.getElementById('fixtureVenue').value || null,
+                status: status,
+                our_score: status === 'completed' ? parseInt(document.getElementById('fixtureOurScore').value) : null,
+                their_score: status === 'completed' ? parseInt(document.getElementById('fixtureTheirScore').value) : null,
+                competition: document.getElementById('fixtureCompetition').value || null
+            });
+            if (!error) {
+                closeModal('fixtureModal');
+                loadAllData();
+            }
+        });
+
+        document.getElementById('newsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const { error } = await supabase.from('news').insert({
+                title: document.getElementById('newsTitle').value,
+                body: document.getElementById('newsBody').value,
+                image_url: document.getElementById('newsImage').value || null
+            });
+            if (!error) {
+                closeModal('newsModal');
+                loadAllData();
+            }
+        });
+
+        document.getElementById('galleryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const { error } = await supabase.from('gallery').insert({
+                image_url: document.getElementById('galleryImage').value,
+                caption: document.getElementById('galleryCaption').value || null
+            });
+            if (!error) {
+                closeModal('galleryModal');
+                loadAllData();
+            }
+        });
+
+        // Show/hide scores when status changes
+        document.getElementById('fixtureStatus').addEventListener('change', (e) => {
+            const showScores = e.target.value === 'completed';
+            document.getElementById('scoreGroup').style.display = showScores ? 'block' : 'none';
+            document.getElementById('theirScoreGroup').style.display = showScores ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>
