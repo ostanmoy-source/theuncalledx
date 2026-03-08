@@ -1,496 +1,1183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Focus — Sign In</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Uncalled X - UnX Football Club | Chittagong</title>
+    <meta name="description" content="The Uncalled X (UnX) - A football club founded in 2023 by batchmates in Chittagong. Friends mainly. Nothing else matters.">
+    <meta name="keywords" content="The Uncalled X, UnX, football club, Chittagong, soccer, FC">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://theuncalledx.pages.dev/">
+    <meta name="google-site-verification" content="google90ebec4811aa83b2">
+    <link rel="icon" type="image/x-icon" href="https://theuncalledx.pages.dev/favicon.ico">
+    
+    <!-- Open Graph & Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Uncalled X - UnX Football Club">
+    <meta property="og:description" content="A football club founded in 2023 by batchmates in Chittagong. Friends mainly.">
+    <meta property="og:url" content="https://theuncalledx.pages.dev/">
+    <meta property="og:image" content="https://theuncalledx.pages.dev/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Uncalled X - UnX Football Club">
+    
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsTeam",
+      "name": "The Uncalled X",
+      "alternateName": "UnX",
+      "url": "https://theuncalledx.pages.dev",
+      "foundingDate": "2023",
+      "sport": "Football",
+      "location": {"@type": "Place", "name": "Chittagong, Bangladesh"}
+    }
+    </script>
 
-  :root {
-    --bg:      #0e0d0b;
-    --bg2:     #161512;
-    --bg3:     #1e1c19;
-    --border:  #2e2c28;
-    --text:    #f0ead8;
-    --text2:   #a09880;
-    --text3:   #5a5548;
-    --accent:  #e8a832;
-    --accent2: #c47f15;
-    --accent-dim: rgba(232,168,50,0.1);
-    --accent-glow: rgba(232,168,50,0.25);
-    --green:   #6fcf87;
-  }
+    <!-- Google Fonts - Bold Display & Clean Body -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
-  html, body {
-    height: 100%;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow: hidden;
-  }
+    <style>
+        :root {
+            --primary: #00FF00;
+            --accent: #00FF00;
+            --dark: #0a0a0a;
+            --darker: #000000;
+            --white: #FFFFFF;
+            --gray: #1a1a1a;
+            --gray-light: #2a2a2a;
+            --accent-orange: #FF6B00;
+        }
 
-  /* Animated background */
-  .bg-orbs {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  }
-  .orb {
-    position: absolute; border-radius: 50%;
-    filter: blur(80px); animation: orbFloat 12s ease-in-out infinite;
-  }
-  .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(232,168,50,0.08), transparent 70%);
-    top: -100px; left: -100px; animation-delay: 0s;
-  }
-  .orb-2 {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(104,168,232,0.06), transparent 70%);
-    bottom: -100px; right: -100px; animation-delay: -4s;
-  }
-  .orb-3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(111,207,135,0.04), transparent 70%);
-    top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -8s;
-  }
-  @keyframes orbFloat {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    33% { transform: translate(30px,-20px) scale(1.05); }
-    66% { transform: translate(-20px,30px) scale(0.95); }
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* Noise texture */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 1; opacity: 0.35;
-  }
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
 
-  .page {
-    position: relative; z-index: 2;
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-  }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--white);
+            line-height: 1.6;
+            letter-spacing: -0.3px;
+        }
 
-  .login-card {
-    width: 100%; max-width: 420px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 40px 36px;
-    position: relative;
-    overflow: hidden;
-    animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
+        h1 {
+            font-size: clamp(3rem, 12vw, 5.5rem);
+            line-height: 0.9;
+            letter-spacing: 4px;
+        }
 
-  /* Top gradient line */
-  .login-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.6;
-  }
+        h2 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            letter-spacing: 3px;
+        }
 
-  /* Corner glow */
-  .login-card::after {
-    content: '';
-    position: absolute; top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, var(--accent-glow), transparent 70%);
-    pointer-events: none;
-  }
+        h3 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            letter-spacing: 2px;
+        }
 
-  .brand {
-    margin-bottom: 32px;
-  }
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(0px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-  .brand-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-    line-height: 1;
-    margin-bottom: 6px;
-    text-shadow: 0 0 30px var(--accent-glow);
-  }
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 255, 0, 0.15), inset 0 1px 0 rgba(0, 255, 0, 0.1);
+            padding: 1rem 3rem;
+        }
 
-  .brand-tagline {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--primary), #33FF33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            position: relative;
+        }
 
-  .login-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
+        .logo::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
 
-  .login-sub {
-    font-size: 13.5px;
-    color: var(--text2);
-    margin-bottom: 28px;
-    line-height: 1.5;
-  }
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
 
-  /* Form */
-  .form-label {
-    display: block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--text3);
-    margin-bottom: 6px;
-  }
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            position: relative;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
 
-  .email-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    padding: 12px 14px;
-    outline: none;
-    transition: all 0.2s;
-    margin-bottom: 14px;
-  }
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-  .email-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-dim);
-  }
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 100%;
+        }
 
-  .email-input::placeholder { color: var(--text3); }
+        .nav-links a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
 
-  .btn-magic {
-    width: 100%;
-    background: var(--accent);
-    color: #0e0d0b;
-    border: none;
-    border-radius: 100px;
-    padding: 13px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    letter-spacing: 0.2px;
-  }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
 
-  .btn-magic:hover {
-    background: var(--accent2);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px var(--accent-glow);
-  }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 1px;
+            box-shadow: 0 0 8px var(--primary);
+            transition: all 0.3s ease;
+        }
 
-  .btn-magic:active { transform: translateY(0); }
-  .btn-magic:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--darker) 0%, #0d0d0d 50%, var(--darker) 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: 0;
+            padding-top: 100px;
+        }
 
-  /* States */
-  .msg-box {
-    display: none;
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 13px;
-    margin-bottom: 14px;
-    line-height: 1.5;
-  }
-  .msg-box.success {
-    display: block;
-    background: rgba(111,207,135,0.1);
-    border: 1px solid rgba(111,207,135,0.3);
-    color: var(--green);
-  }
-  .msg-box.error {
-    display: block;
-    background: rgba(232,104,104,0.1);
-    border: 1px solid rgba(232,104,104,0.3);
-    color: #e86868;
-  }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            aspect-ratio: 1;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-glow 8s ease-in-out infinite;
+            filter: blur(60px);
+        }
 
-  .divider {
-    display: flex; align-items: center; gap: 12px;
-    margin: 22px 0;
-  }
-  .divider::before, .divider::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
-  .divider-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: var(--text3);
-    text-transform: uppercase; letter-spacing: 1px;
-  }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            left: -10%;
+            width: 50%;
+            aspect-ratio: 1;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-glow 10s ease-in-out infinite reverse;
+            filter: blur(80px);
+        }
 
-  .btn-sso {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    color: var(--text2);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 11px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 9px;
-    margin-bottom: 8px;
-  }
-  .btn-sso:hover { border-color: var(--text3); color: var(--text); background: var(--bg3); }
+        @keyframes pulse-glow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.1); }
+        }
 
-  .footer-note {
-    margin-top: 24px;
-    font-size: 12px;
-    color: var(--text3);
-    text-align: center;
-    line-height: 1.6;
-  }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1000px;
+            padding: 0 2rem;
+            animation: heroFadeIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-  .footer-note a {
-    color: var(--text2);
-    text-decoration: none;
-    border-bottom: 1px solid var(--border);
-    transition: color 0.2s;
-  }
-  .footer-note a:hover { color: var(--accent); }
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-  /* Features strip */
-  .features {
-    display: flex; gap: 0;
-    margin-top: 28px;
-    padding-top: 22px;
-    border-top: 1px solid var(--border);
-  }
-  .feature {
-    flex: 1; text-align: center; padding: 0 8px;
-  }
-  .feature:not(:last-child) {
-    border-right: 1px solid var(--border);
-  }
-  .feature-icon { font-size: 18px; margin-bottom: 4px; }
-  .feature-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; color: var(--text3);
-    text-transform: uppercase; letter-spacing: 0.5px;
-    line-height: 1.4;
-  }
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--white) 60%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 0, 0.3));
+        }
 
-  /* Loading overlay */
-  .loading-ov {
-    display: none;
-    position: fixed; inset: 0;
-    background: var(--bg);
-    z-index: 100;
-    align-items: center; justify-content: center;
-    flex-direction: column; gap: 16px;
-  }
-  .loading-ov.show { display: flex; }
-  .loader {
-    width: 36px; height: 36px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px; color: var(--text3);
-    text-transform: uppercase; letter-spacing: 1px;
-  }
-</style>
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: #999;
+            margin-bottom: 3rem;
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none !important;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: 'Bebas Neue', sans-serif;
+            display: inline-block;
+            box-shadow: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn:hover {
+            color: var(--darker);
+            transform: scale(1.08);
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--darker);
+            border-color: var(--primary);
+        }
+
+        .btn-primary::before {
+            background: transparent;
+        }
+
+        .btn-primary:hover {
+            background: #33FF33;
+            box-shadow: 0 0 35px rgba(51, 255, 51, 0.8);
+            transform: scale(1.08);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section.dark {
+            background: var(--dark);
+            border-top: 3px solid var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .section.darker {
+            background: var(--darker);
+        }
+
+        .section-title {
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            letter-spacing: 3px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -30px;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), rgba(0, 255, 0, 0));
+            margin: 1.5rem auto 0;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* Match Card */
+        .match-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, rgba(0, 255, 0, 0) 100%);
+            border: 2px solid var(--primary);
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.2), inset 0 0 40px rgba(0, 255, 0, 0.05);
+            position: relative;
+        }
+
+        .match-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: slideRight 2s ease-in-out infinite;
+        }
+
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .match-date {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .match-teams {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .team-name {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .vs {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px var(--primary);
+        }
+
+        .match-venue {
+            color: #aaa;
+            font-size: 1rem;
+            margin-top: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, var(--gray-light) 0%, var(--gray) 100%);
+            border-left: 5px solid var(--primary);
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100px;
+            width: 150px;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, transparent 70%);
+            transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .result-card:hover {
+            transform: translateX(15px);
+            box-shadow: 0 10px 40px rgba(0, 255, 0, 0.25);
+            border-left-color: #33FF33;
+        }
+
+        .result-card:hover::before {
+            right: -20px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .result-date {
+            color: var(--primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .result-badge {
+            padding: 0.6rem 1.3rem;
+            border-radius: 0;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: 'Bebas Neue', sans-serif;
+            border: 2px solid;
+        }
+
+        .badge-win {
+            background: rgba(0, 255, 0, 0.15);
+            color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .badge-loss {
+            background: rgba(255, 0, 0, 0.15);
+            color: #FF4444;
+            border-color: #FF4444;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .badge-draw {
+            background: rgba(150, 150, 150, 0.15);
+            color: #999;
+            border-color: #999;
+        }
+
+        .result-teams {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .result-score {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            min-width: 100px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .news-card {
+            background: linear-gradient(135deg, var(--gray) 0%, var(--gray-light) 100%);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            transition: left 0.6s ease;
+            z-index: 1;
+        }
+
+        .news-card:hover::before {
+            left: 100%;
+        }
+
+        .news-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 255, 0, 0.2), inset 0 0 30px rgba(0, 255, 0, 0.05);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--gray-light), var(--gray));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .news-card:hover .news-image::after {
+            opacity: 1;
+        }
+
+        .news-content {
+            padding: 2rem;
+        }
+
+        .news-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            color: var(--white);
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+
+        .news-date {
+            color: var(--primary);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .news-excerpt {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem;
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, transparent 100%);
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.3);
+            transform: translateY(-8px);
+            border-color: #33FF33;
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        /* Social */
+        .social-section {
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--primary);
+            border-radius: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.05), transparent);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0);
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.6);
+        }
+
+        .social-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--primary);
+            fill: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover svg {
+            stroke: var(--darker);
+            fill: var(--darker);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            border-top: 3px solid var(--primary);
+            padding: 5rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .footer-section a {
+            display: block;
+            color: #999;
+            text-decoration: none;
+            margin-bottom: 0.9rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            transform: translateX(8px);
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, var(--primary), #33FF33);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 255, 0, 0.2);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+
+            .match-teams {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .result-teams {
+                flex-direction: column;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            nav.scrolled {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                padding: 1rem 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="logo">UnX</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li><a href="team.html" class="nav-link">Team</a></li>
+            <li><a href="fixtures.html" class="nav-link">Fixtures</a></li>
+            <li><a href="news.html" class="nav-link">News</a></li>
+            <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+            <li><a href="join.html" class="nav-link">Join Us</a></li>
+            <li><a href="admin.html" class="nav-link">Admin</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
 
-<div class="bg-orbs">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>THE UNCALLED X</h1>
+            <p class="hero-subtitle">Founded 2023 • Chittagong</p>
+            <div class="hero-cta">
+                <a href="team.html" class="btn btn-primary">View Team</a>
+                <a href="fixtures.html" class="btn">Fixtures</a>
+            </div>
+        </div>
+    </section>
 
-<div class="loading-ov" id="loadingOv">
-  <div class="loader"></div>
-  <div class="loading-text">Signing you in…</div>
-</div>
+    <!-- Next Match -->
+    <section class="section dark">
+        <h2 class="section-title">Next Match</h2>
+        <div id="nextMatchContainer">
+            <div class="match-card" style="color: #666;">
+                <p>Loading match data...</p>
+            </div>
+        </div>
+    </section>
 
-<div class="page">
-  <div class="login-card">
+    <!-- Recent Results -->
+    <section class="section darker">
+        <h2 class="section-title">Recent Results</h2>
+        <div class="results-grid" id="resultsContainer">
+            <div style="text-align: center; grid-column: 1 / -1; color: #666; padding: 4rem 2rem;">
+                <div class="loading"></div>
+                <p style="margin-top: 1rem;">Loading results...</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="brand">
-      <div class="brand-name">Focus</div>
-      <div class="brand-tagline">Personal Study Tracker</div>
-    </div>
+    <!-- News -->
+    <section class="section dark">
+        <h2 class="section-title">Latest News</h2>
+        <div class="news-grid" id="newsContainer">
+            <div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">
+                <div class="loading"></div>
+                <p style="margin-top: 1rem;">Loading news...</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="login-title">Welcome back</div>
-    <div class="login-sub">Enter your email and we'll send you a magic link — no password needed.</div>
+    <!-- Stats -->
+    <section class="section darker">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="playersCount">0</div>
+                <div class="stat-label">Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="fixturesCount">0</div>
+                <div class="stat-label">Matches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2023</div>
+                <div class="stat-label">Founded</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="winsCount">0</div>
+                <div class="stat-label">Wins</div>
+            </div>
+        </div>
+    </section>
 
-    <div class="msg-box" id="msgBox"></div>
+    <!-- Social -->
+    <section class="section dark social-section">
+        <h2 class="section-title">Follow Us</h2>
+        <div class="social-links" id="socialLinks"></div>
+    </section>
 
-    <label class="form-label" for="emailInput">Email address</label>
-    <input
-      type="email"
-      class="email-input"
-      id="emailInput"
-      placeholder="you@example.com"
-      autocomplete="email"
-      onkeypress="if(event.key==='Enter') sendMagicLink()"
-    >
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">UnX</div>
+                <p style="color: #888; font-size: 0.95rem;">The Uncalled X</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links</h3>
+                <a href="index.html">Home</a>
+                <a href="team.html">Team</a>
+                <a href="fixtures.html">Fixtures</a>
+                <a href="news.html">News</a>
+                <a href="gallery.html">Gallery</a>
+            </div>
+            <div class="footer-section">
+                <h3>Join</h3>
+                <a href="join.html">Apply Now</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Uncalled X. | Chittagong, Bangladesh</p>
+        </div>
+    </footer>
 
-    <button class="btn-magic" id="magicBtn" onclick="sendMagicLink()">
-      <span>✉</span> Send Magic Link
-    </button>
+    <script>
+        const SUPABASE_URL = 'https://dwsvxrucgixlfvoltnqj.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3c3Z4cnVjZ2l4bGZ2b2x0bnFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4OTQ0NjcsImV4cCI6MjA4ODQ3MDQ2N30.36W-BNx9kNNpvRlaOz0YpKmroG6CVh5-Aj-M-9JSuWQ';
 
-    <div class="divider"><span class="divider-text">or</span></div>
+        // Scroll effect
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
 
-    <button class="btn-sso" onclick="loginWithProvider('google')">
-      <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Continue with Google
-    </button>
+        // Hamburger
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
 
-    <button class="btn-sso" onclick="loginWithProvider('github')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--text2)"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      Continue with GitHub
-    </button>
+        // Update active nav
+        function updateActiveNav() {
+            const current = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === current);
+            });
+        }
+        updateActiveNav();
 
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">⚡</div>
-        <div class="feature-label">Pomodoro Timer</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📊</div>
-        <div class="feature-label">Analytics</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🏅</div>
-        <div class="feature-label">Badges</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🌐</div>
-        <div class="feature-label">Public Profile</div>
-      </div>
-    </div>
+        // Fetch next match
+        async function fetchNextMatch() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fixtures?status=eq.upcoming&order=match_date.asc&limit=1`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                const data = await response.json();
+                const container = document.getElementById('nextMatchContainer');
 
-    <div class="footer-note">
-      By signing in you agree to our
-      <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.<br>
-      Your private data is stored securely on your device.
-    </div>
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="match-card" style="color: #666;">No upcoming matches scheduled</div>';
+                    return;
+                }
 
-  </div>
-</div>
+                const match = data[0];
+                const matchDate = new Date(match.match_date);
+                const formattedDate = matchDate.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
 
-<script>
-  // ── Netlify Identity ──
-  const netlifyIdentity = window.netlifyIdentity;
+                container.innerHTML = `
+                    <div class="match-card">
+                        <div class="match-date">${formattedDate}</div>
+                        <div class="match-teams">
+                            <div class="team-name">UnX</div>
+                            <div class="vs">VS</div>
+                            <div class="team-name">${match.opponent}</div>
+                        </div>
+                        <div class="match-venue">📍 ${match.venue || 'TBA'}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('nextMatchContainer').innerHTML = '<div class="match-card" style="color: #666;">Unable to load match</div>';
+            }
+        }
 
-  // If already logged in, go straight to app
-  netlifyIdentity.on('init', user => {
-    if (user) goToApp();
-  });
+        // Fetch results
+        async function fetchRecentResults() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/fixtures?status=eq.completed&order=match_date.desc&limit=5`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                const data = await response.json();
+                const container = document.getElementById('resultsContainer');
 
-  netlifyIdentity.on('login', user => {
-    goToApp();
-  });
+                if (data.length === 0) {
+                    container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">No completed matches yet</div>';
+                    return;
+                }
 
-  netlifyIdentity.init();
+                container.innerHTML = data.map(result => {
+                    const date = new Date(result.match_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    let badgeClass = 'badge-draw';
+                    if (result.our_score > result.their_score) badgeClass = 'badge-win';
+                    if (result.our_score < result.their_score) badgeClass = 'badge-loss';
+                    const resultText = result.our_score > result.their_score ? 'WIN' : result.our_score < result.their_score ? 'LOSS' : 'DRAW';
 
-  function goToApp() {
-    document.getElementById('loadingOv').classList.add('show');
-    window.location.href = '/app.html';
-  }
+                    return `
+                        <div class="result-card">
+                            <div class="result-header">
+                                <span class="result-date">${date}</span>
+                                <span class="result-badge ${badgeClass}">${resultText}</span>
+                            </div>
+                            <div class="result-teams">
+                                <span class="team-name">UnX</span>
+                                <span class="result-score">${result.our_score} - ${result.their_score}</span>
+                                <span class="team-name">${result.opponent}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultsContainer').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">Unable to load results</div>';
+            }
+        }
 
-  // ── Magic Link ──
-  function sendMagicLink() {
-    const email = document.getElementById('emailInput').value.trim();
-    const btn   = document.getElementById('magicBtn');
-    const msg   = document.getElementById('msgBox');
+        // Fetch news
+        async function fetchNews() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/news?order=created_at.desc&limit=3`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                const data = await response.json();
+                const container = document.getElementById('newsContainer');
 
-    // Clear previous
-    msg.className = 'msg-box';
-    msg.textContent = '';
+                if (data.length === 0) {
+                    container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">No news posted yet</div>';
+                    return;
+                }
 
-    if (!email || !isValidEmail(email)) {
-      showMsg('Please enter a valid email address.', 'error');
-      return;
-    }
+                container.innerHTML = data.map(post => {
+                    const date = new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    const excerpt = post.body.substring(0, 80) + (post.body.length > 80 ? '...' : '');
 
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
+                    return `
+                        <div class="news-card">
+                            <div class="news-image">${post.image_url ? `<img src="${post.image_url}" alt="${post.title}" style="width: 100%; height: 100%; object-fit: cover;">` : 'No Image'}</div>
+                            <div class="news-content">
+                                <div class="news-date">${date}</div>
+                                <div class="news-title">${post.title}</div>
+                                <div class="news-excerpt">${excerpt}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('newsContainer').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 4rem 2rem;">Unable to load news</div>';
+            }
+        }
 
-    // Use Netlify Identity signup/login flow (magic link)
-    netlifyIdentity.open('signup');
+        // Fetch stats
+        async function fetchStats() {
+            try {
+                const calls = [
+                    fetch(`${SUPABASE_URL}/rest/v1/players?select=count`, {
+                        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+                    }),
+                    fetch(`${SUPABASE_URL}/rest/v1/fixtures?select=count`, {
+                        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+                    }),
+                    fetch(`${SUPABASE_URL}/rest/v1/fixtures?status=eq.completed&our_score=gt.their_score&select=count`, {
+                        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+                    })
+                ];
 
-    // Pre-fill email field in the widget after it opens
-    setTimeout(() => {
-      const emailFields = document.querySelectorAll('.netlify-identity-widget input[type="email"]');
-      emailFields.forEach(f => f.value = email);
-    }, 500);
+                const responses = await Promise.all(calls);
+                const counts = responses.map(r => r.headers.get('content-range')?.split('/')[1] || '0');
 
-    // Also try direct API approach
-    fetch('/.netlify/identity/magiclink', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    })
-    .then(r => {
-      if (r.ok || r.status === 422) {
-        // 422 = already exists, still sends link
-        btn.disabled = false;
-        btn.innerHTML = '<span>✉</span> Send Magic Link';
-        showMsg(`✓ Magic link sent to ${email}! Check your inbox and click the link to sign in.`, 'success');
-      } else {
-        return r.json().then(d => { throw new Error(d.msg || 'Failed to send link'); });
-      }
-    })
-    .catch(err => {
-      // Fallback: open Netlify Identity widget directly
-      btn.disabled = false;
-      btn.innerHTML = '<span>✉</span> Send Magic Link';
-      netlifyIdentity.open('signup');
-    });
-  }
+                document.getElementById('playersCount').textContent = counts[0];
+                document.getElementById('fixturesCount').textContent = counts[1];
+                document.getElementById('winsCount').textContent = counts[2];
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
 
-  // ── OAuth ──
-  function loginWithProvider(provider) {
-    netlifyIdentity.open('login');
-  }
+        // Social links
+        function loadSocialLinks() {
+            const links = [
+                { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61579326412155', color: '#1877f2' },
+                { name: 'Instagram', url: 'https://www.instagram.com/the_uncalled_x/', color: '#e1306c' }
+            ];
 
-  // ── Helpers ──
-  function showMsg(text, type) {
-    const msg = document.getElementById('msgBox');
-    msg.textContent = text;
-    msg.className = 'msg-box ' + type;
-  }
+            document.getElementById('socialLinks').innerHTML = links.map(link => `
+                <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="social-icon" title="${link.name}">
+                    <svg viewBox="0 0 24 24">
+                        ${link.name === 'Facebook' ? `<path d="M18 2h-3a6 6 0 0 0-6 6v3H7v4h2v8h4v-8h3l1-4h-4V8a2 2 0 0 1 2-2h3z"></path>` : `<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle>`}
+                    </svg>
+                </a>
+            `).join('');
+        }
 
-  function isValidEmail(e) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-  }
-
-  // Handle magic link token in URL (when user clicks link in email)
-  if (window.location.hash.includes('confirmation_token') ||
-      window.location.hash.includes('access_token') ||
-      window.location.hash.includes('recovery_token')) {
-    document.getElementById('loadingOv').classList.add('show');
-    netlifyIdentity.on('login', () => goToApp());
-  }
-</script>
+        // Load everything
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchNextMatch();
+            fetchRecentResults();
+            fetchNews();
+            fetchStats();
+            loadSocialLinks();
+        });
+    </script>
 </body>
 </html>
